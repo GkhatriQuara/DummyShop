@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Shop from "./components/Shop";
+import Header from "./components/Header";
 
-function App() {
+let dummy_Commerce = [];
+
+const App = () => {
+  const [commerce, setCommerce] = useState(dummy_Commerce);
+
+  const fetchData = () => {
+    fetch("https://dummyjson.com/products")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setCommerce(data.products);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Shop item={commerce} />
     </div>
   );
-}
+};
 
 export default App;
